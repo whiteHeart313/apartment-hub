@@ -15,7 +15,7 @@ import { AllExceptionsFilter } from './filter/all-exceptions.filter';
     credentials: true,
   });
 
-  console.log('Configuring global validation pipe....');
+  console.log('Configuring global validation pipe.....');
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
