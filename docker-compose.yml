@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  # Postgres Service
+  apartment-db:
+    image: postgres:latest
+    container_name: apartment-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=nawy-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - POSTGRES_URI=postgres://postgres:password@apartment-db:5432/nawy-db
+    depends_on:
+      - apartment-db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8080/v1
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
