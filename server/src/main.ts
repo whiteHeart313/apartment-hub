@@ -19,6 +19,7 @@ import { AllExceptionsFilter } from './filter/all-exceptions.filter';
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+
       forbidNonWhitelisted: true,
       transform: true,
     }),
