@@ -10,18 +10,19 @@ import { AllExceptionsFilter } from './filter/all-exceptions.filter';
 
   app.enableCors({
     // if there is a client is going to talk to you.
-      origin: ['http://localhost:5173', 'http://frontend:5173'],
-      methods: ['GET', 'POST'],
-      credentials: true,
-    });
+    origin: ['http://localhost:5173', 'http://frontend:5173'],
+    methods: ['GET', 'POST'],
+    credentials: true,
+  });
 
-  console.log('Configuring global validation pipe...')
-  app.useGlobalPipes(new ValidationPipe({
+  console.log('Configuring global validation pipe....');
+  app.useGlobalPipes(
+    new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
-    }));
-  
+    }),
+  );
 
   app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(process.env.PORT ?? 3000);
