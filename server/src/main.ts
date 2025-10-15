@@ -1,8 +1,9 @@
+import './alias-register';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from '@app/app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { AllExceptionsFilter } from './filter/all-exceptions.filter';
-import { logger } from './utils/logger';
+import { AllExceptionsFilter } from '@app/filter/all-exceptions.filter';
+import { logger } from '@app/utils/logger';
 
 (async () => {
   logger.info('Starting apartment hub service...');

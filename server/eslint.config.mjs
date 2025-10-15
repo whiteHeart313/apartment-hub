@@ -32,6 +32,7 @@ export default tseslint.config(
       'no-commented-code': noCommentedCode,
     },
     rules: {
+     
       // Type safety
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
@@ -40,6 +41,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-misused-promises': ['error', { checksConditionals: true, checksVoidReturn: { attributes: true } }],
+      '@typescript-eslint/no-var-requires': 'off',
 
 
       'no-const-assign': 'error',
