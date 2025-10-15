@@ -2,7 +2,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 //import { CreateApartmentDto } from './dto/create-apartment.dto';
-
 @Injectable()
 export class ApartmentService {
   constructor(private readonly prisma: PrismaService) {}
