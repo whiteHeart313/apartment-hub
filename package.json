@@ -19,7 +19,7 @@
   },
   "lint-staged": {
     "server/**/*.ts": [
-      "eslint --fix --max-warnings=0 --config server/eslint.config.mjs",
+      "yarn --cwd server lint",
       "prettier --write"
     ],
     "client/**/*.{ts,tsx}": [
