@@ -7,7 +7,7 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import noCommentedCode from 'eslint-plugin-no-commented-code';
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs'],
+    ignores: ['eslint.config.mjs', 'src/alias-register.ts'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -41,7 +41,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-misused-promises': ['error', { checksConditionals: true, checksVoidReturn: { attributes: true } }],
-      '@typescript-eslint/no-var-requires': 'off',
+      
 
 
       'no-const-assign': 'error',
@@ -90,9 +90,9 @@ export default tseslint.config(
         { blankLine: 'always', prev: '*', next: ['function', 'class'] },
         { blankLine: 'always', prev: ['function', 'class'], next: '*' },
       ],
-
       // Maintainability
       'max-lines': ['warn', { max: 500, skipBlankLines: true, skipComments: true }],
     },
+    
   },
 );
