@@ -25,6 +25,7 @@ export class ApartmentService {
     return this.prisma.apartment.create({
       data,
     });
+    
   }
    */
 

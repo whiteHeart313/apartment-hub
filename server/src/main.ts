@@ -1,21 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './filter/all-exceptions.filter';
+import { logger } from './utils/logger';
 
 (async () => {
-  console.log('Starting apartment hub service...');
+  logger.info('Starting apartment hub service...');
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    // if there is a client is going to talk to you.
     origin: ['http://localhost:5173', 'http://frontend:5173'],
     methods: ['GET', 'POST'],
     credentials: true,
   });
 
-  console.log('Configuring global validation pipe.....');
+  logger.info('Configuring global validation pipe....');
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -27,4 +26,11 @@ import { AllExceptionsFilter } from './filter/all-exceptions.filter';
 
   app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(process.env.PORT ?? 8080);
-})();
+})()
+  .then(() => {
+    logger.info('Apartment hub service started successfully!');
+  })
+  .catch((err) => {
+    logger.error('Failed to start apartment hub service:', err);
+    process.exit(1);
+  });
