@@ -12,10 +12,10 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(PrismaService.name);
-  private static instance: PrismaService;
+  private static instance?: PrismaService;
 
   constructor() {
-    if (PrismaService.instance) {
+    if (PrismaService.instance !== undefined) {
       return PrismaService.instance;
     }
 
@@ -54,26 +54,12 @@ export class PrismaService
   async isHealthy(): Promise<boolean> {
     try {
       await this.$queryRaw`SELECT 1`;
+
       return true;
     } catch (error) {
       this.logger.error('Database health check failed:', error);
+
       return false;
     }
-  }
-
-  // Batch operations helper
-  async batchOperation(
-    operations: any[],
-    batchSize = 100,
-  ): Promise<PromiseSettledResult<any>[]> {
-    const results: PromiseSettledResult<any>[] = [];
-
-    for (let i = 0; i < operations.length; i += batchSize) {
-      const batch = operations.slice(i, i + batchSize);
-      const batchResults = await Promise.allSettled(batch);
-      results.push(...batchResults);
-    }
-
-    return results;
   }
 }

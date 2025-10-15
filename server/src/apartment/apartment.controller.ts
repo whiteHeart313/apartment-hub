@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApartmentService } from './apartment.service';
+import { ApartmentService } from '@app/apartment/apartment.service';
 
 @Controller('v1/apartment')
 export class ApartmentController {
