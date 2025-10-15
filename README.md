@@ -8,6 +8,13 @@ Simple app to list apartments, view details, and add new ones.
 - Backend: NestJS (server on port `8080`)
 - Database: Postgres (port `5432`)
 
+## Clone the repository (if you haven't already):
+
+```bash
+git clone <repository-url>
+cd apartment-hub
+```
+
 ## Run with Docker (recommended)
 
 - Build and start all services:
