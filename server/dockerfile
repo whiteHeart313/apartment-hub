@@ -2,19 +2,16 @@
 FROM node:20-alpine AS builder
 
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+RUN yarn add class-validator class-transformer
+
 COPY . .
-RUN npm run build
+RUN yarn build && \
+    yarn install --production --frozen-lockfile && \
+    yarn cache clean
 
-# Deps stage - separate production dependencies
-FROM node:20-alpine AS deps
-
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --omit=dev && npm cache clean --force
-
-# Production stage
+# Production stage (single stage, smaller)
 FROM node:20-alpine
 
 WORKDIR /app
@@ -22,18 +19,17 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nestjs
 
-# Copy only what's needed
-COPY --from=deps --chown=nestjs:nodejs /app/node_modules ./node_modules
+RUN mkdir -p /app/logs && chown -R nestjs:nodejs /app/logs
+
+# Copy everything from builder
+COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
-COPY --chown=nestjs:nodejs package*.json ./
+COPY --from=builder --chown=nestjs:nodejs /app/package.json ./
 
 USER nestjs
 
 EXPOSE 8080
 
 ENV NODE_ENV=production
-
-HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:8080/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 CMD ["node", "dist/main.js"]
