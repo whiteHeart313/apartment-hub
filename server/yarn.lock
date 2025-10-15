@@ -2674,6 +2674,11 @@ eslint-config-prettier@^10.0.1:
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-10.1.8.tgz#15734ce4af8c2778cc32f0b01b37b0b5cd1ecb97"
   integrity sha512-82GZUjRS0p/jganf6q1rEO25VSoHH0hKPCTrgillPjdI/3bgBhAE1QzHrHTizjpRvy6pGAvKjDJtk2pF9NDq8w==
 
+eslint-plugin-no-commented-code@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-no-commented-code/-/eslint-plugin-no-commented-code-1.0.10.tgz#09700e529472b07685d6db6de5ae83ce4ab16a58"
+  integrity sha512-F8tBlF1WUdivVE9+KoDY4CTIO5kP4Gb4rRBp9UxAxcuemhwMXdT5bpvox7hBVL15SlxeVgloPSXh6QBufIxb2w==
+
 eslint-plugin-prettier@^5.2.2:
   version "5.5.4"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-5.5.4.tgz#9d61c4ea11de5af704d4edf108c82ccfa7f2e61c"
@@ -2681,6 +2686,11 @@ eslint-plugin-prettier@^5.2.2:
   dependencies:
     prettier-linter-helpers "^1.0.0"
     synckit "^0.11.7"
+
+eslint-plugin-unused-imports@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-unused-imports/-/eslint-plugin-unused-imports-4.2.0.tgz#d83b23be66ae7713734c884df95988f039eb8362"
+  integrity sha512-hLbJ2/wnjKq4kGA9AUaExVFIbNzyxYdVo49QZmKCnhk5pc9wcYRbfgLHvWJ8tnsdcseGhoUAddm9gn/lt+d74w==
 
 eslint-scope@5.1.1:
   version "5.1.1"
