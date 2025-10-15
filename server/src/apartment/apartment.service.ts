@@ -16,18 +16,6 @@ export class ApartmentService {
     });
   }
 
-  /**
-   * 
-   * @param query 
-   * @returns 
-   * async create(data: CreateApartmentDto) {
-    return this.prisma.apartment.create({
-      data,
-    });
-    
-  }
-   */
-
   async search(query: string) {
     return this.prisma.apartment.findMany({
       where: {
