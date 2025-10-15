@@ -5,7 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './filter/all-exceptions.filter';
 
 (async () => {
-  console.log('Starting ledger-task service...');
+  console.log('Starting apartment hub service...');
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
@@ -26,5 +26,5 @@ import { AllExceptionsFilter } from './filter/all-exceptions.filter';
   );
 
   app.useGlobalFilters(new AllExceptionsFilter());
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 8080);
 })();
