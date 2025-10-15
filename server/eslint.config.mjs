@@ -5,8 +5,6 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import unusedImports from 'eslint-plugin-unused-imports';
 import noCommentedCode from 'eslint-plugin-no-commented-code';
-import { fileURLToPath } from 'node:url';
-import { includeIgnoreFile } from '@eslint/compat';
 import { globalIgnores } from 'eslint/config';
 
 export default tseslint.config(
