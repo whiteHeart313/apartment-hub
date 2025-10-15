@@ -32,6 +32,8 @@ docker-compose up -d --build
 
 ## Run locally (without Docker)
 
+### Note : if yarn --cwd not working properly , try to move to the (server / client) directory and run the command again with no --cwd.
+
 - Install dependencies:
 
 ```bash
