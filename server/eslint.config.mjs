@@ -8,7 +8,7 @@ import noCommentedCode from 'eslint-plugin-no-commented-code';
 import { globalIgnores } from 'eslint/config';
 
 export default tseslint.config(
-  globalIgnores(['eslint.config.mjs', '*/src/alias-register.ts']),
+  globalIgnores(['eslint.config.mjs', 'src/alias-register.ts']),
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   eslintPluginPrettierRecommended,

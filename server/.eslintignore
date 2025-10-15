@@ -1,4 +1,0 @@
-# .eslintignore
-dist/
-node_modules/
-src/alias-register.ts
