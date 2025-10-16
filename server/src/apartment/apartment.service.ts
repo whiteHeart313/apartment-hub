@@ -6,13 +6,21 @@ import { PrismaService } from '@app/prisma/prisma.service';
 export class ApartmentService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll() {
-    return this.prisma.apartment.findMany();
+  async findAll(page = 1, perPage = 10) {
+    const skip = (page - 1) * perPage;
+    const take = perPage;
+    const data = await this.prisma.apartment.findMany({
+      skip,
+      take,
+      orderBy: { id: 'asc' },
+    });
+
+    return { data, page, perPage };
   }
 
-  async findOne(id: number) {
+  async findOne(unitNumber: string) {
     return this.prisma.apartment.findUnique({
-      where: { id },
+      where: { unit_number: unitNumber },
     });
   }
 
