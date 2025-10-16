@@ -5,9 +5,15 @@ import {
   HttpStatus,
   Query,
   Param,
+  Body,
+  Post,
 } from '@nestjs/common';
 import { ApartmentService } from '@app/apartment/apartment.service';
-import { PaginationQueryDto } from './dto/partment.dto';
+import {
+  CreateApartmentDto,
+  PaginationQueryDto,
+  searchDTO,
+} from './dto/apartment.dto';
 
 @Controller('v1/apartment')
 export class ApartmentController {
@@ -26,5 +32,17 @@ export class ApartmentController {
   @HttpCode(HttpStatus.OK)
   async findOne(@Param('unitNumber') unitNumber: string) {
     return this.apartService.findOne(unitNumber);
+  }
+
+  @Post('add-apartmen')
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() apartmentDto: CreateApartmentDto) {
+    return this.apartService.createApartment(apartmentDto);
+  }
+
+  @Get('search')
+  @HttpCode(HttpStatus.OK)
+  async search(@Query() searchDto: searchDTO) {
+    return this.apartService.search(searchDto.q);
   }
 }
