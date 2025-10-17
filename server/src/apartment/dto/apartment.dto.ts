@@ -7,8 +7,12 @@ import {
   IsString,
   MinLength,
   MaxLength,
+  IsArray,
+  IsIn,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
+
+const trimValue = ({ value }: { value: string }) => value.trim();
 
 export class PaginationQueryDto {
   @IsOptional()
@@ -26,10 +30,32 @@ export class PaginationQueryDto {
   @Min(1)
   @Max(10)
   perPage?: number;
-}
 
-// we sure that value is string
-const trimValue = ({ value }: { value: string }) => value.trim();
+  @IsOptional()
+  @IsString()
+  @Transform(trimValue, { toClassOnly: true })
+  @MinLength(1)
+  @MaxLength(255)
+  @Matches(/^[^<>]*$/, {
+    message: 'search parameter must not contain HTML tags',
+  })
+  search?: string;
+
+  @IsOptional()
+  @IsString()
+  @Transform(trimValue, { toClassOnly: true })
+  @MinLength(1)
+  @MaxLength(255)
+  @Matches(/^[^<>]*$/, {
+    message: 'project parameter must not contain HTML tags',
+  })
+  project?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['available', 'rented', 'pending'])
+  status?: string;
+}
 
 export class searchDTO {
   @IsString()
@@ -85,4 +111,28 @@ export class CreateApartmentDto {
     message: 'description must not contain HTML tags',
   })
   description!: string;
+
+  @IsString()
+  @IsIn(['available', 'rented', 'pending'])
+  status!: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  amenities!: string[];
+
+  @IsArray()
+  @IsString({ each: true })
+  images!: string[];
+
+  @IsString()
+  @Matches(/^\d+(\.\d{1,2})?$/, {
+    message:
+      'area must be a decimal string with up to 2 digits after the decimal point',
+  })
+  area!: string;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  bathrooms!: number;
 }
