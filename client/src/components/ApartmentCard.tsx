@@ -26,6 +26,8 @@ export function ApartmentCard({ apartment, onClick }: ApartmentCardProps) {
           src={apartment.images[0]}
           alt={apartment.unitName}
           className="w-full h-full object-cover"
+          width={400}
+          height={300}
         />
         <Badge
           className={`absolute top-3 right-3 ${statusColors[apartment.status]}`}

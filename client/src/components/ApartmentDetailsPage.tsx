@@ -88,6 +88,8 @@ export function ApartmentDetailsPage({ apartment }: ApartmentDetailsPageProps) {
                     src={apartment.images[selectedImage]}
                     alt={`${apartment.unitName} - Image ${selectedImage + 1}`}
                     className="w-full h-full object-cover"
+                    width={400}
+                    height={300}
                   />
                 </div>
 
@@ -107,6 +109,8 @@ export function ApartmentDetailsPage({ apartment }: ApartmentDetailsPageProps) {
                           src={image}
                           alt={`Thumbnail ${index + 1}`}
                           className="w-full h-full object-cover"
+                          width={400}
+                          height={300}
                         />
                       </button>
                     ))}
