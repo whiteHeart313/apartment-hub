@@ -6,7 +6,7 @@ import { Apartment } from "../types/apartment";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./imageFallback/ImageWithFallback";
 import {
   ArrowLeft,
   MapPin,

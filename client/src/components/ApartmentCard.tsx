@@ -1,7 +1,7 @@
 import { Apartment } from "../types/apartment";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./imageFallback/ImageWithFallback";
 import { MapPin, Bed, Bath, Maximize2 } from "lucide-react";
 
 interface ApartmentCardProps {
