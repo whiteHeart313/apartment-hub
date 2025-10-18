@@ -15,11 +15,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Project {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique @db.VarChar(255)
+  description String?     @db.VarChar(500)
+  location    String?     @db.VarChar(255)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  apartments  Apartment[]
+
+  @@index([name], map: "idx_project_name")
+}
+
 model Apartment {
   id          Int      @id @default(autoincrement())
   unit_name   String   @db.VarChar(255)
   unit_number String   @db.VarChar(255) @unique
-  project     String   @db.VarChar(255)
+  projectId   Int
+  project     Project  @relation(fields: [projectId], references: [id])
   address     String
   price       Decimal  @db.Decimal(10, 2)
   bedrooms    Int
@@ -31,7 +44,7 @@ model Apartment {
   area        Decimal  @default(0) @db.Decimal(8, 2)
   bathrooms   Int      @default(1)
 
-  @@index([project], map: "idx_project")
+  @@index([projectId], map: "idx_project_id")
   @@index([unit_number], map: "idx_unit_number")
   @@index([status], map: "idx_status")
 }

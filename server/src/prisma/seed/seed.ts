@@ -3,6 +3,29 @@ import { PrismaClient, Prisma } from '../../../generated/prisma';
 const prisma = new PrismaClient();
 
 async function main() {
+  // First, create projects
+  const projects = [
+    { name: 'Sunrise Residency' },
+    { name: 'Ocean View Towers' },
+    { name: 'Downtown Plaza' },
+    { name: 'Green Valley Homes' },
+  ];
+
+  const createdProjects = await Promise.all(
+    projects.map(async (project) => {
+      return prisma.project.upsert({
+        where: { name: project.name },
+        update: {},
+        create: project,
+      });
+    }),
+  );
+
+  // Create a map for easy project lookup
+  const projectMap = new Map(
+    createdProjects.map((project) => [project.name, project.id]),
+  );
+
   const apartments: Array<{
     unit_name: string;
     unit_number: string;
@@ -154,11 +177,17 @@ async function main() {
   ];
 
   for (const apt of apartments) {
+    const projectId = projectMap.get(apt.project);
+
+    if (projectId === undefined) {
+      throw new Error(`Project not found: ${apt.project}`);
+    }
+
     await prisma.apartment.upsert({
       where: { unit_number: apt.unit_number },
       update: {
         unit_name: apt.unit_name,
-        project: apt.project,
+        projectId: projectId,
         address: apt.address,
         price: apt.price,
         bedrooms: apt.bedrooms,
@@ -172,7 +201,7 @@ async function main() {
       create: {
         unit_name: apt.unit_name,
         unit_number: apt.unit_number,
-        project: apt.project,
+        projectId: projectId,
         address: apt.address,
         price: apt.price,
         bedrooms: apt.bedrooms,
