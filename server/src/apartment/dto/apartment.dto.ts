@@ -16,19 +16,17 @@ const trimValue = ({ value }: { value: string }) => value.trim();
 
 export class PaginationQueryDto {
   @IsOptional()
-  @Matches(/^\d+$/) // to reject formats like (1e0) which = 1
   @Type(() => Number)
   @IsInt() // int to prevent values like 2.5 / '20'
   @Min(1)
-  @Max(10) // max 10 to prevent DOS attack
+  @Max(50) // increased from 10 to 50
   page?: number;
 
   @IsOptional()
-  @Matches(/^\d+$/)
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  @Max(10)
+  @Max(50) // increased from 10 to 50
   perPage?: number;
 
   @IsOptional()
