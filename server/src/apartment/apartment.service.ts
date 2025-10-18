@@ -8,6 +8,8 @@ import { PrismaService } from '@app/prisma/prisma.service';
 import { CreateApartmentDto } from './dto/apartment.dto';
 import { Prisma } from 'generated/prisma';
 import { logger } from '@app/utils/logger';
+import { ApartmentFilters } from './interfaces/apartment.interface';
+import { isNonEmptyString } from '@app/utils/helpers';
 
 @Injectable()
 export class ApartmentService {
@@ -85,17 +87,23 @@ export class ApartmentService {
   }
 }
 
-function buildWhereClause(filters: {
-  search?: string;
-  project?: string;
-  status?: string;
-}): Prisma.ApartmentWhereInput {
+/**
+ * Builds a Prisma where clause from apartment filters
+ * @param filters - Filter object with optional search, project, and status
+ * @returns Prisma.ApartmentWhereInput for database queries
+ */
+function buildWhereClause(
+  filters?: ApartmentFilters,
+): Prisma.ApartmentWhereInput {
   const where: Prisma.ApartmentWhereInput = {};
-  const search = filters?.search?.trim() ?? '';
-  // in the above line we know that if search is null, the coalescing operator is going to apply the right hand side
-  // but only for avioding [Unexpected nullable string value in conditional] lint flag , we check if search is null again in the if condition.
 
-  if (search.length > 1 && search !== '') {
+  if (!filters) {
+    return where;
+  }
+
+  const search = filters.search?.trim();
+
+  if (isNonEmptyString(search)) {
     where.OR = [
       { unit_name: { contains: search, mode: 'insensitive' } },
       { unit_number: { contains: search, mode: 'insensitive' } },
@@ -104,15 +112,15 @@ function buildWhereClause(filters: {
     ];
   }
 
-  const status = filters?.status?.trim() ?? '';
+  const status = filters.status?.trim();
 
-  if (status.length > 1 && status !== '') {
+  if (isNonEmptyString(status)) {
     where.status = status;
   }
 
-  const project = filters?.project?.trim() ?? '';
+  const project = filters.project?.trim();
 
-  if (project.length > 1 && project !== '') {
+  if (isNonEmptyString(project)) {
     where.project = { contains: project, mode: 'insensitive' };
   }
 
