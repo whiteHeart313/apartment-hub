@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useApartments } from "./useApartments";
 import { useUrlFilters } from "./useUrlFilters";
