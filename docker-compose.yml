@@ -30,6 +30,8 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:password@apartment-db:5432/nawy-db
+    volumes:
+      - ./client/public/images:/client/public/images
     depends_on:
       apartment-db:
         condition: service_healthy
@@ -47,6 +49,8 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8080/v1
+    volumes:
+      - ./client/public/images:/app/public/images
     depends_on:
       - backend
     networks:
