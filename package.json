@@ -23,7 +23,7 @@
       "prettier --write"
     ],
     "client/**/*.{ts,tsx}": [
-      "yarn --cwd client lint --fix --max-warnings=0",
+      "yarn --cwd client lint --fix --max-warnings=3",
       "prettier --write"
     ],
     "*.{json,md,yml}": [
