@@ -11,7 +11,7 @@ function transformApartment(backendApartment: BackendApartment): Apartment {
     id: backendApartment.id.toString(),
     unitName: backendApartment.unit_name,
     unitNumber: backendApartment.unit_number,
-    project: backendApartment.project,
+    project: backendApartment.project.name,
     price: parseFloat(backendApartment.price),
     bedrooms: backendApartment.bedrooms,
     bathrooms: backendApartment.bathrooms,
@@ -122,6 +122,23 @@ export class ApartmentService {
         throw new Error(`Failed to search apartments: ${error.message}`);
       }
       throw new Error("Failed to search apartments: Unknown error occurred");
+    }
+  }
+
+  /**
+   * Get all projects
+   */
+  async getAllProjects(): Promise<{ id: number; name: string }[]> {
+    try {
+      const response = await apiClient.get<{ id: number; name: string }[]>(
+        "/v1/apartments/projects",
+      );
+      return response;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw new Error(`Failed to fetch projects: ${error.message}`);
+      }
+      throw new Error("Failed to fetch projects: Unknown error occurred");
     }
   }
 

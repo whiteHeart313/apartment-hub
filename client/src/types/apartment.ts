@@ -32,7 +32,14 @@ export interface BackendApartment {
   id: number;
   unit_name: string;
   unit_number: string;
-  project: string;
+  project: {
+    id: number;
+    name: string;
+    description: string | null;
+    location: string | null;
+    createdAt: string;
+    updatedAt: string;
+  };
   address: string;
   price: string; // Decimal comes as string from backend
   bedrooms: number;
