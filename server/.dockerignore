@@ -205,8 +205,3 @@ eslint.config.*
 
 # Husky
 .husky/
-
-# Package manager lock files (keep package.json but exclude locks in some cases)
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
