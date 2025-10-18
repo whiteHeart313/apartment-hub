@@ -15,9 +15,8 @@ export function ApartmentListingPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterProject, setFilterProject] = useState("all");
   const [page, setPage] = useState(1);
-  const perPage = 12;
+  const perPage = 10;
 
-  // API call with filters
   const { apartments, loading, error, pagination, refetch, loadMore, hasMore } =
     useApartments({
       page,
@@ -41,12 +40,12 @@ export function ApartmentListingPage() {
 
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
-    setPage(1); // Reset to first page when searching
+    setPage(1);
   }, []);
 
   const handleProjectFilter = useCallback((project: string) => {
     setFilterProject(project);
-    setPage(1); // Reset to first page when filtering
+    setPage(1);
   }, []);
 
   const handleLoadMore = useCallback(async () => {
