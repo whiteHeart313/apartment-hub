@@ -161,6 +161,38 @@ export class ApartmentService {
       throw new Error("Failed to create apartment: Unknown error occurred");
     }
   }
+
+  /**
+   * Upload images for apartment
+   */
+  async uploadImages(images: File[]): Promise<string[]> {
+    try {
+      const formData = new FormData();
+      images.forEach((image) => {
+        formData.append("images", image);
+      });
+
+      const response = await fetch(
+        "http://localhost:8080/v1/apartments/upload-images",
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to upload images");
+      }
+
+      const result = await response.json();
+      return result.images;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw new Error(`Failed to upload images: ${error.message}`);
+      }
+      throw new Error("Failed to upload images: Unknown error occurred");
+    }
+  }
 }
 
 // Export singleton instance
