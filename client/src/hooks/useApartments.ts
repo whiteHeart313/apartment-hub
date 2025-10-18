@@ -39,7 +39,7 @@ export function useApartments(
       try {
         setState((prev) => ({
           ...prev,
-          loading: !isLoadMore, // Don't show loading for load more
+          loading: !isLoadMore,
           error: null,
         }));
 
@@ -73,12 +73,56 @@ export function useApartments(
         }));
       }
     },
-    [filters, state.pagination.page],
+    [filters],
   );
 
   const refetch = useCallback(() => fetchApartments(false), [fetchApartments]);
 
-  const loadMore = useCallback(() => fetchApartments(true), [fetchApartments]);
+  const loadMore = useCallback(async () => {
+    if (
+      state.pagination.total &&
+      state.apartments.length >= state.pagination.total
+    ) {
+      return;
+    }
+
+    try {
+      setState((prev) => ({
+        ...prev,
+        error: null,
+      }));
+
+      const nextPage = state.pagination.page + 1;
+      const response = await apartmentService.getApartments({
+        ...filters,
+        page: nextPage,
+      });
+
+      setState((prev) => ({
+        apartments: [...prev.apartments, ...response.apartments],
+        loading: false,
+        error: null,
+        pagination: {
+          ...response.pagination,
+          page: nextPage,
+        },
+      }));
+    } catch (error) {
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to load more apartments",
+      }));
+    }
+  }, [
+    filters,
+    state.pagination.page,
+    state.pagination.total,
+    state.apartments.length,
+  ]);
 
   const hasMore = state.pagination.total
     ? state.apartments.length < state.pagination.total
@@ -87,7 +131,6 @@ export function useApartments(
   useEffect(() => {
     fetchApartments(false);
   }, [
-    fetchApartments,
     filters.page,
     filters.perPage,
     filters.search,
