@@ -59,7 +59,7 @@ export class ApartmentService {
       if (status) params.append("status", status);
 
       const response = await apiClient.get<PaginatedResponse<BackendApartment>>(
-        `/v1/apartment?${params.toString()}`,
+        `/v1/apartments?${params.toString()}`,
       );
 
       const apartments = response.data.map(transformApartment);
@@ -86,7 +86,7 @@ export class ApartmentService {
   async getApartmentByUnitNumber(unitNumber: string): Promise<Apartment> {
     try {
       const response = await apiClient.get<BackendApartment>(
-        `/v1/apartment/${encodeURIComponent(unitNumber)}`,
+        `/v1/apartments/${encodeURIComponent(unitNumber)}`,
       );
 
       return transformApartment(response);
@@ -113,7 +113,7 @@ export class ApartmentService {
       }
 
       const response = await apiClient.get<BackendApartment[]>(
-        `/v1/apartment/search?q=${encodeURIComponent(query.trim())}`,
+        `/v1/apartments/search?q=${encodeURIComponent(query.trim())}`,
       );
 
       return response.map(transformApartment);
@@ -149,7 +149,7 @@ export class ApartmentService {
       };
 
       const response = await apiClient.post<BackendApartment>(
-        "/v1/apartment/add-apartmen", // Note: keeping the typo from backend
+        "/v1/apartments/add-apartmen", // Note: keeping the typo from backend
         backendData,
       );
 

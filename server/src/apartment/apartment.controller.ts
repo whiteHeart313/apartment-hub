@@ -11,7 +11,7 @@ import {
 import { ApartmentService } from '@app/apartment/apartment.service';
 import { CreateApartmentDto, PaginationQueryDto } from './dto/apartment.dto';
 
-@Controller('v1/apartment')
+@Controller('v1/apartments')
 export class ApartmentController {
   constructor(private readonly apartService: ApartmentService) {}
   @Get('')
