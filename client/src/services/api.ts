@@ -45,7 +45,9 @@ class ApiClient {
           const errorData = await response.json();
           errorMessage = errorData.message || errorMessage;
         } catch {
-          // If response is not JSON, use the default error message
+          throw new ApiError(
+            "Ooops something went wrong , maybe the response is not in json format",
+          );
         }
 
         throw new ApiError(errorMessage, response.status);
