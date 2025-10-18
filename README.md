@@ -157,6 +157,8 @@ GET /v1/apartment/1
 
 #### 3. Create New Apartment
 
+> **Note**: This route should be protected by authentication middleware in a production environment. Each user should only be able to add apartments and view their own private apartment details and surely the public info about the other apartments. However, for the purpose of this task, authentication is not implemented and the functionality is kept simple.
+
 **POST** `/v1/apartment/add-apartmen`
 
 Create a new apartment listing.
