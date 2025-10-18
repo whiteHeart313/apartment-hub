@@ -21,6 +21,7 @@ import { CreateApartmentDto, PaginationQueryDto } from './dto/apartment.dto';
 @Controller('v1/apartments')
 export class ApartmentController {
   constructor(private readonly apartService: ApartmentService) {}
+
   @Get('')
   @HttpCode(HttpStatus.OK)
   async findAll(@Query() query: PaginationQueryDto) {
@@ -35,6 +36,13 @@ export class ApartmentController {
       status,
     });
   }
+
+  @Get('/projects')
+  @HttpCode(HttpStatus.OK)
+  async getAllProjects() {
+    return this.apartService.gettAllProjects();
+  }
+
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
   async findOne(@Param('id') id: string) {
