@@ -8,6 +8,26 @@ Simple app to list apartments, view details, and add new ones.
 - Backend: NestJS (server on port `8080`)
 - Database: Postgres (port `5432`)
 
+## Database Design
+
+The application uses a relational database with the following models:
+
+### Relationship
+
+- **One-to-Many**: One Project can have multiple Apartments
+- **Foreign Key**: `Apartment.projectId` references `Project.id`
+
+### Database Seeding
+
+For simplicity in this task, projects are seeded directly into the database using the seed script. The following projects are automatically created:
+
+- Sunrise Residency
+- Ocean View Towers
+- Downtown Plaza
+- Green Valley Homes
+
+When creating new apartments through the API, if a project name doesn't exist, it will be automatically created in the database.
+
 ## Clone the repository (if you haven't already):
 
 ```bash
@@ -26,9 +46,6 @@ docker-compose up -d --build
 - Open:
   - Frontend: http://localhost:3000
   - Backend API: http://localhost:8080/v1
-- Compose sets:
-  - `NEXT_PUBLIC_API_URL=http://backend:8080/v1` (frontend)
-  - `POSTGRES_URI=postgres://postgres:password@apartment-db:5432/nawy-db` (backend)
 
 ## Run locally (without Docker)
 
