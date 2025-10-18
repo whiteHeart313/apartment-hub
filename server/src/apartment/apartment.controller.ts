@@ -60,14 +60,7 @@ export class ApartmentController {
   @UseInterceptors(
     FilesInterceptor('images', 4, {
       storage: diskStorage({
-        destination: join(
-          process.cwd(),
-          '..',
-          'client',
-          'public',
-          'images',
-          'apartments',
-        ),
+        destination: join(process.cwd(), 'uploads', 'images', 'apartments'),
         filename: (req, file, callback) => {
           const uniqueSuffix = `${Date.now()}-${uuidv4()}`;
           const extension = extname(file.originalname);
