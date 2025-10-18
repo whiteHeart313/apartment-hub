@@ -5,9 +5,17 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
+# Copy Prisma schema first (needed for prisma generate)
+COPY src/prisma ./prisma
 COPY . .
-RUN yarn build && \
-    yarn install --production --frozen-lockfile && \
+RUN npx prisma generate 
+
+# Build the application
+RUN yarn build
+
+
+
+RUN yarn install --production --frozen-lockfile && \
     yarn cache clean
 
 # Production stage (single stage, smaller)
@@ -21,9 +29,13 @@ RUN addgroup --system --gid 1001 nodejs && \
 RUN mkdir -p /app/logs && chown -R nestjs:nodejs /app/logs
 
 # Copy everything from builder
+COPY --from=builder --chown=nestjs:nodejs /app/generated ./generated
 COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
+COPY --from=builder --chown=nestjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nestjs:nodejs /app/package.json ./
+
+RUN ln -sf /app/generated /app/dist/generated
 
 USER nestjs
 
@@ -31,4 +43,4 @@ EXPOSE 8080
 
 ENV NODE_ENV=production
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
