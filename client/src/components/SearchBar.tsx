@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import { Input } from "./ui/input";
 import {
   Select,
@@ -23,6 +24,31 @@ export function SearchBar({
   setFilterProject,
   projects,
 }: SearchBarProps) {
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+
+  // Debounce search query updates
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (localSearchQuery !== searchQuery) {
+        setSearchQuery(localSearchQuery);
+      }
+    }, 500); // 500ms debounce delay
+
+    return () => clearTimeout(timeoutId);
+  }, [localSearchQuery, searchQuery, setSearchQuery]);
+
+  // Sync local state when external searchQuery changes
+  useEffect(() => {
+    setLocalSearchQuery(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setLocalSearchQuery(e.target.value);
+    },
+    [],
+  );
+
   return (
     <div className="flex flex-col md:flex-row gap-4 mb-6">
       <div className="relative flex-1">
@@ -30,8 +56,8 @@ export function SearchBar({
         <Input
           type="text"
           placeholder="Search by unit name or number..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          value={localSearchQuery}
+          onChange={handleSearchChange}
           className="pl-10"
         />
       </div>
