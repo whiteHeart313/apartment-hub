@@ -57,17 +57,6 @@ export class PaginationQueryDto {
   status?: string;
 }
 
-export class searchDTO {
-  @IsString()
-  @Transform(trimValue, { toClassOnly: true })
-  @MinLength(3)
-  @MaxLength(255)
-  @Matches(/^[^<>]*$/, {
-    message: 'search parameter must not contain HTML tags',
-  })
-  q: string;
-}
-
 export class CreateApartmentDto {
   @IsString()
   @Transform(trimValue, { toClassOnly: true })
