@@ -1,15 +1,40 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useApartments } from "./useApartments";
 import { useUrlFilters } from "./useUrlFilters";
+import { apartmentService } from "../services/apartmentService";
 import { APARTMENT_LISTING_CONFIG } from "../constants/apartmentListing";
+
+interface Project {
+  id: number;
+  name: string;
+}
 
 export function useApartmentFilters() {
   const router = useRouter();
   const { filters, handlers, setters } = useUrlFilters();
   const { searchQuery, filterProject, page } = filters;
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
 
   const perPage = APARTMENT_LISTING_CONFIG.ITEMS_PER_PAGE;
+
+  // Fetch projects from backend
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoadingProjects(true);
+        const projectsData = await apartmentService.getAllProjects();
+        setProjects(projectsData);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      } finally {
+        setLoadingProjects(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const { apartments, loading, error, pagination, refetch, loadMore, hasMore } =
     useApartments({
@@ -21,12 +46,6 @@ export function useApartmentFilters() {
           ? filterProject
           : undefined,
     });
-
-  const projects = useMemo(() => {
-    // Extract unique projects from current apartments
-    const uniqueProjects = new Set(apartments.map((apt) => apt.project));
-    return Array.from(uniqueProjects);
-  }, [apartments]);
 
   const handleApartmentClick = useCallback(
     (apartmentId: string) => {

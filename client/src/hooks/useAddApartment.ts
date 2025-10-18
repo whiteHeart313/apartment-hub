@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apartmentService } from "../services/apartmentService";
 import { Apartment } from "../types/apartment";
@@ -24,11 +24,36 @@ export interface FormErrors {
   [key: string]: string;
 }
 
+export interface Project {
+  id: number;
+  name: string;
+}
+
 export function useAddApartment() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+
+  // Fetch projects on component mount
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoadingProjects(true);
+        const projectsData = await apartmentService.getAllProjects();
+        setProjects(projectsData);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+        setErrors({ projects: "Failed to load projects" });
+      } finally {
+        setLoadingProjects(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const validateForm = useCallback((data: ApartmentFormData): FormErrors => {
     const errors: FormErrors = {};
@@ -182,5 +207,7 @@ export function useAddApartment() {
     submitApartment,
     validateField,
     setErrors,
+    projects,
+    loadingProjects,
   };
 }
