@@ -10,7 +10,7 @@ import { logger } from '@app/utils/logger';
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://frontend:5173'],
+    origin: ['http://localhost:3000', 'http://frontend:3000'],
     methods: ['GET', 'POST'],
     credentials: true,
   });
