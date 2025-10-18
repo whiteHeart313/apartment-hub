@@ -24,7 +24,13 @@ model Apartment {
   bedrooms    Int
   description String   @db.VarChar(255)
   createdAt   DateTime @default(now())
+  status      String   @default("available") @db.VarChar(20)
+  amenities   String[] @default([])
+  images      String[] @default([])
+  area        Decimal  @default(0) @db.Decimal(8, 2)
+  bathrooms   Int      @default(1)
 
   @@index([project], map: "idx_project")
   @@index([unit_number], map: "idx_unit_number")
+  @@index([status], map: "idx_status")
 }
