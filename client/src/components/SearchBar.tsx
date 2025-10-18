@@ -9,12 +9,17 @@ import {
 } from "./ui/select";
 import { Search } from "lucide-react";
 
+interface Project {
+  id: number;
+  name: string;
+}
+
 interface SearchBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   filterProject: string;
   setFilterProject: (project: string) => void;
-  projects: string[];
+  projects: Project[];
 }
 
 export function SearchBar({
@@ -69,8 +74,8 @@ export function SearchBar({
         <SelectContent>
           <SelectItem value="all">All Projects</SelectItem>
           {projects.map((project) => (
-            <SelectItem key={project} value={project}>
-              {project}
+            <SelectItem key={project.id} value={project.name}>
+              {project.name}
             </SelectItem>
           ))}
         </SelectContent>

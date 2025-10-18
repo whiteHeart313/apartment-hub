@@ -25,6 +25,9 @@ export function AddApartmentPage() {
     uploadProgress,
     submitApartment,
     validateField,
+    setErrors,
+    projects,
+    loadingProjects,
   } = useAddApartment();
 
   const [formData, setFormData] = useState<ApartmentFormData>({
@@ -151,16 +154,31 @@ export function AddApartmentPage() {
                 <Label htmlFor="project">
                   Project <span className="text-red-500">*</span>
                 </Label>
-                <Input
-                  id="project"
-                  type="text"
-                  value={formData.project}
-                  onChange={handleInputChange("project")}
-                  placeholder="e.g., Sunrise Residency"
-                  required
-                />
+                {loadingProjects ? (
+                  <div className="flex h-10 w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm items-center">
+                    Loading projects...
+                  </div>
+                ) : (
+                  <select
+                    id="project"
+                    value={formData.project}
+                    onChange={handleInputChange("project")}
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">Select a project</option>
+                    {projects.map((project) => (
+                      <option key={project.id} value={project.name}>
+                        {project.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
                 {errors.project && (
                   <p className="text-sm text-red-600">{errors.project}</p>
+                )}
+                {errors.projects && (
+                  <p className="text-sm text-red-600">{errors.projects}</p>
                 )}
               </div>
 
