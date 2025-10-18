@@ -31,6 +31,9 @@ export class ApartmentService {
         skip,
         take,
         orderBy: { createdAt: 'desc' },
+        include: {
+          project: true, // Include project details
+        },
       }),
       this.prisma.apartment.count({ where }),
     ]);
@@ -47,6 +50,9 @@ export class ApartmentService {
   async findOne(id: number) {
     const apartment = await this.prisma.apartment.findUnique({
       where: { id: id },
+      include: {
+        project: true, // Include project details
+      },
     });
 
     if (!apartment) {
@@ -58,18 +64,57 @@ export class ApartmentService {
 
   async createApartment(apartmentDto: CreateApartmentDto) {
     await this.checkForDuplicateUnitNumber(apartmentDto.unit_number);
+
+    // Find or create project
+    const project = await this.findProject(apartmentDto.project);
+
+    if (!project) {
+      throw new NotFoundException(
+        `Project with name ${apartmentDto.project} not found`,
+      );
+    }
+
     const payload = {
-      ...apartmentDto,
+      unit_name: apartmentDto.unit_name,
+      unit_number: apartmentDto.unit_number,
+      projectId: project.id,
+      address: apartmentDto.address,
       price: new Prisma.Decimal(apartmentDto.price),
+      bedrooms: apartmentDto.bedrooms,
+      description: apartmentDto.description,
+      status: apartmentDto.status,
+      amenities: apartmentDto.amenities,
+      images: apartmentDto.images,
       area: new Prisma.Decimal(apartmentDto.area),
+      bathrooms: apartmentDto.bathrooms,
     };
 
     try {
-      return await this.prisma.apartment.create({ data: payload });
+      return await this.prisma.apartment.create({
+        data: payload,
+        include: {
+          project: true, // Include project details in response
+        },
+      });
     } catch (err) {
       logger.error('Failed to create apartment', err);
       throw err;
     }
+  }
+
+  async findProject(projectName: string) {
+    const project = await this.prisma.project.findUnique({
+      where: { name: projectName },
+    });
+
+    return project;
+  }
+
+  // if projects grow we may add pagination , but for simplicity now we return everything
+  // if there are more functionality about the projects (UPDATE / DELETE ) we may create a seperate service
+
+  async gettAllProjects() {
+    return this.prisma.project.findMany();
   }
 
   async checkForDuplicateUnitNumber(unitNumber: string) {
@@ -105,8 +150,9 @@ function buildWhereClause(
     where.OR = [
       { unit_name: { contains: search, mode: 'insensitive' } },
       { unit_number: { contains: search, mode: 'insensitive' } },
-      { project: { contains: search, mode: 'insensitive' } },
+      { address: { contains: search, mode: 'insensitive' } },
       { description: { contains: search, mode: 'insensitive' } },
+      { project: { name: { contains: search, mode: 'insensitive' } } },
     ];
   }
 
@@ -119,7 +165,9 @@ function buildWhereClause(
   const project = filters.project?.trim();
 
   if (isNonEmptyString(project)) {
-    where.project = { contains: project, mode: 'insensitive' };
+    where.project = {
+      name: { contains: project, mode: 'insensitive' },
+    };
   }
 
   return where;
