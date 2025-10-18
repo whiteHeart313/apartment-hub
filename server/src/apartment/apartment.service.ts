@@ -44,15 +44,13 @@ export class ApartmentService {
     };
   }
 
-  async findOne(unitNumber: string) {
+  async findOne(id: number) {
     const apartment = await this.prisma.apartment.findUnique({
-      where: { unit_number: unitNumber },
+      where: { id: id },
     });
 
     if (!apartment) {
-      throw new NotFoundException(
-        `Apartment with unit_number ${unitNumber} not found`,
-      );
+      throw new NotFoundException(`Apartment with unit_number ${id} not found`);
     }
 
     return apartment;

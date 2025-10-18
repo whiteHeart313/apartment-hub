@@ -28,10 +28,10 @@ export class ApartmentController {
       status,
     });
   }
-  @Get('/:unitNumber')
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  async findOne(@Param('unitNumber') unitNumber: string) {
-    return this.apartService.findOne(unitNumber);
+  async findOne(@Param('id') id: string) {
+    return this.apartService.findOne(Number(id));
   }
 
   @Post('add-apartmen')
