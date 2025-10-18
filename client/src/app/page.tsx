@@ -1,7 +1,7 @@
 "use client";
 
-import { ApartmentListingPage } from "../components/ApartmentListingPage";
+import { ApartmentListingWrapper } from "../components/ApartmentListingWrapper";
 
 export default function Home() {
-  return <ApartmentListingPage />;
+  return <ApartmentListingWrapper />;
 }
